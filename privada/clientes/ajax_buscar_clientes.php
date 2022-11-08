@@ -32,7 +32,7 @@ if ($paterno or $materno or $nombres or $ci){
     <th>C.I</th><th>PATERNO</th><th>MATERNO</th><th>NOMBRES</th><th><img src='../../imagenes/modificar.png'></th><th><img src='../../imagenes/borrar1.jpg'></th>
     </tr>";
     foreach($rs3 as $k => $fila) {
-      $str = $fila["ci"];
+      $str = $fila["ciss"];
       $str1 = $fila["ap"];
       $str2 = $fila["am"];
       $str3 = $fila["nombres"];
