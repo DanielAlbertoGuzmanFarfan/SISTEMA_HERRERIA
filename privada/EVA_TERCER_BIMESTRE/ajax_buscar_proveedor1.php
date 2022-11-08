@@ -1,0 +1,50 @@
+<?php
+session_start();
+require_once("../../smarty/libs/Smarty.class.php");
+require_once("../../conexion.php");
+require_once("../../resaltarBusqueda.inc.php");
+
+$id_proveedor1= strip_tags(stripslashes($_POST["id_proveedor1"]));
+$descripcion = strip_tags(stripslashes($_POST["descripcion"]));
+$modelo = strip_tags(stripslashes($_POST["modelo"]));
+
+//$db-> debug=true;
+
+if ($id_proveedor1 or $descripcion or $modelo ) {
+	$sql3 = $db->Prepare("SELECT *
+						FROM productos prd, proveedores1 pro
+                        WHERE pro.id_proveedor1 = prd.id_proveedor1
+                        AND pro.nombre like ?
+                        AND prd.descripcion like ?
+                        AND prd.modelo like ? 
+						");
+
+	$rs3 = $db->GetAll($sql3, array($id_proveedor1."%",$descripcion."%",$modelo."%"));
+
+		if ($rs3) {
+			echo "<center>
+				<table width='60%' border='1'>
+				<tr>
+				<th>NOMBRE</th><th>DESCRIPCION</th><th>MODELO</th><th>?</th>
+					</tr>";
+				foreach($rs3 as $k => $fila){
+					$str = $fila["id_proveedor1"];
+					$str1 = $fila["descripcion"];
+					$str2 = $fila["modelo"];
+					echo "<tr>
+					<td align='center'>".resaltar($nombre,$str)."</td>
+					<td>".resaltar($descripcion,$str1)."</td>
+					<td>".resaltar($modelo,$str2)."</td>
+					<td align='center'>
+					<input type='radio' name='option' value='' onclick='buscar_proveedor (".$fila["id_proveedor1"].")'>
+					</td>
+				</tr>";
+				}
+				echo"</table>
+				</center>";
+		} else {
+			echo"<center><b> EL PROVEEDOR NO EXISTE!!!</b></center><br>";
+			
+		}
+}
+?>
